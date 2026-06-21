@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ThreadTrace — Deployment Test</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,600;9..144,700&family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;1,6..72,400&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --linen: #f4efe6;
+    --linen-deep: #e9e0d1;
+    --mocha: #6b5544;
+    --mocha-deep: #3b302a;
+    --driftwood: #8a7a66;
+    --stitch: #6b5544;
+    --checked: #5a7a52;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html, body { height: 100%; }
+  body {
+    font-family: 'Newsreader', Georgia, serif;
+    background: var(--linen);
+    color: var(--mocha-deep);
+    min-height: 100dvh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 24px;
+    -webkit-font-smoothing: antialiased;
+  }
+  .card {
+    width: 100%;
+    max-width: 420px;
+    background: #fffdf8;
+    border: 1px solid var(--linen-deep);
+    border-radius: 18px;
+    padding: 38px 30px 32px;
+    box-shadow: 0 12px 40px rgba(59,48,42,0.10);
+    text-align: center;
+  }
+  .stitch {
+    height: 2px;
+    margin: 22px auto;
+    width: 80%;
+    background-image: repeating-linear-gradient(
+      90deg, var(--stitch) 0 9px, transparent 9px 16px
+    );
+    opacity: 0.55;
+  }
+  .badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 7px;
+    font-family: 'Fraunces', serif;
+    font-size: 12px;
+    font-weight: 600;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--checked);
+    background: rgba(90,122,82,0.10);
+    padding: 6px 13px;
+    border-radius: 999px;
+    margin-bottom: 26px;
+  }
+  .badge::before {
+    content: "";
+    width: 8px; height: 8px;
+    border-radius: 50%;
+    background: var(--checked);
+  }
+  h1 {
+    font-family: 'Fraunces', serif;
+    font-weight: 600;
+    font-size: 30px;
+    line-height: 1.15;
+    letter-spacing: -0.01em;
+    margin-bottom: 12px;
+  }
+  .sub {
+    font-size: 17px;
+    line-height: 1.55;
+    color: var(--mocha);
+    margin-bottom: 4px;
+  }
+  .meta {
+    margin-top: 22px;
+    text-align: left;
+    font-size: 14px;
+  }
+  .row {
+    display: flex;
+    justify-content: space-between;
+    gap: 14px;
+    padding: 9px 0;
+    border-bottom: 1px dashed var(--linen-deep);
+  }
+  .row:last-child { border-bottom: none; }
+  .row .k {
+    font-family: 'Fraunces', serif;
+    font-size: 12px;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--driftwood);
+    white-space: nowrap;
+  }
+  .row .v {
+    color: var(--mocha-deep);
+    text-align: right;
+    word-break: break-all;
+  }
+  .ok { color: var(--checked); font-weight: 500; }
+  .foot {
+    margin-top: 28px;
+    font-size: 13px;
+    color: var(--driftwood);
+    font-style: italic;
+  }
+  .mark { font-family: 'Fraunces', serif; font-weight: 700; }
+</style>
+</head>
+<body>
+  <main class="card">
+    <span class="badge">Checked</span>
+    <h1><span class="mark">ThreadTrace</span><br>deployment is live</h1>
+    <div class="stitch"></div>
+    <p class="sub">If you're reading this on your phone after a scan, the QR&nbsp;→&nbsp;GitHub&nbsp;Pages flow is working end to end.</p>
+
+    <div class="meta">
+      <div class="row"><span class="k">Host</span><span class="v" id="host">—</span></div>
+      <div class="row"><span class="k">Protocol</span><span class="v" id="proto">—</span></div>
+      <div class="row"><span class="k">NFC support</span><span class="v" id="nfc">—</span></div>
+      <div class="row"><span class="k">Loaded</span><span class="v" id="time">—</span></div>
+    </div>
+
+    <div class="stitch"></div>
+    <p class="foot">A consumer-facing digital garment passport.</p>
+  </main>
+
+<script>
+  document.getElementById('host').textContent = location.host || '(local file)';
+  const proto = location.protocol.replace(':','');
+  const protoEl = document.getElementById('proto');
+  protoEl.textContent = proto;
+  if (proto === 'https') protoEl.classList.add('ok');
+
+  const nfcEl = document.getElementById('nfc');
+  if ('NDEFReader' in window) {
+    nfcEl.textContent = 'Web NFC available';
+    nfcEl.classList.add('ok');
+  } else {
+    nfcEl.textContent = 'Not in this browser';
+  }
+
+  document.getElementById('time').textContent =
+    new Date().toLocaleString('en-GB', { dateStyle: 'medium', timeStyle: 'short' });
+</script>
+</body>
+</html>
