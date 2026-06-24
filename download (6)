@@ -1,0 +1,75 @@
+"use client";
+
+import { useState } from "react";
+import { useRecord } from "../RecordContext";
+import { ConsumerPassport } from "../consumer/ConsumerPassport";
+import { SupplierConsole } from "../supplier/SupplierConsole";
+import { OperatorSignIn } from "../supplier/OperatorSignIn";
+
+export function PassportShell() {
+  const { record, pov, setPov, signedIn, setSignedIn } = useRecord();
+  const [showSignIn, setShowSignIn] = useState(false);
+
+  function goConsumer() {
+    setPov("consumer"); // leaving operator returns to the consumer passport
+  }
+  function goSupplier() {
+    if (signedIn) setPov("supplier");
+    else setShowSignIn(true); // gate behind mocked sign-in
+  }
+
+  return (
+    <>
+      <header className="topbar">
+        <div className="topbar-inner">
+          <span className="brand">
+            <span className="stitch" aria-hidden>
+              ⌇
+            </span>
+            ThreadTrace
+            <span
+              style={{
+                fontSize: 12,
+                color: "var(--mocha)",
+                fontFamily: "var(--font-body)",
+                fontWeight: 400,
+              }}
+            >
+              /g/{record.shortcode}
+            </span>
+          </span>
+
+          <div className="pov-switch" role="group" aria-label="Point of view">
+            <button
+              type="button"
+              aria-pressed={pov === "consumer"}
+              onClick={goConsumer}
+            >
+              Shopping
+            </button>
+            <button
+              type="button"
+              aria-pressed={pov === "supplier"}
+              onClick={goSupplier}
+            >
+              Operator
+            </button>
+          </div>
+        </div>
+      </header>
+
+      {pov === "consumer" ? <ConsumerPassport /> : <SupplierConsole />}
+
+      {showSignIn && (
+        <OperatorSignIn
+          onCancel={() => setShowSignIn(false)}
+          onSignedIn={() => {
+            setSignedIn(true);
+            setPov("supplier");
+            setShowSignIn(false);
+          }}
+        />
+      )}
+    </>
+  );
+}
